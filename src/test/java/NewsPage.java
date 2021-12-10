@@ -1,6 +1,7 @@
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.aspectj.weaver.ast.And;
 import org.openqa.selenium.By;
@@ -22,29 +23,44 @@ public class NewsPage {
         waiter.until( ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
     }
 
+    @AndroidFindBy (xpath = "//android.widget.FrameLayout[@content-desc=\"Messenger\"]/android.widget.ImageView")
+    public WebElement messengerButton;
+
+    @AndroidFindBy (accessibility = "Open menu")
+    public WebElement openMenu;
+
+    @AndroidFindBy (accessibility = "Switch modes")
+    public WebElement switchModes;
+
+    @AndroidFindBy (accessibility = "Settings")
+    public WebElement settings;
+
+    @AndroidFindBy (id = "com.vkontakte.android:id/largeLabel")
+    public WebElement button;
+
     void confirmEntering(){
         waitingLocatorByXPath("//android.widget.FrameLayout[@content-desc=\"Messenger\"]/android.widget.ImageView");
     }
 
     void switchToMessage(){
-         driver.findElementByXPath("//android.widget.FrameLayout[@content-desc=\"Messenger\"]/android.widget.ImageView").click();
+        messengerButton.click();
     }
 
     void clickOnMenu(){
-        driver.findElementByAccessibilityId("Open menu").click();
+        openMenu.click();
     }
 
     void switchTheme() {
-        driver.findElementByAccessibilityId("Switch modes").click();
+        switchModes.click();
     }
 
     void switchToSettings(){
-        driver.findElementByAccessibilityId("Settings").click();
+        settings.click();
     }
 
 
     void clickButton(){
-        driver.findElementById("com.vkontakte.android:id/largeLabel").click();
+        button.click();
     }
 
     public boolean atPage(AndroidDriver driver)

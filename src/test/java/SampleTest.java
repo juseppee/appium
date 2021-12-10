@@ -26,7 +26,6 @@ public class SampleTest {
     private static LoginPage loginPage;
     private static NewsPage newsPage;
     private static MessagePage messagePage;
-    private static ProfilePage profilePage;
     private static SettingsPage settingsPage;
     private static FavoritesPage favoritesPage;
     private DesiredCapabilities capabilities;
@@ -48,7 +47,6 @@ public class SampleTest {
         loginPage = new LoginPage(driver);
         newsPage = new NewsPage(driver);
         messagePage = new MessagePage(driver);
-        profilePage = new ProfilePage(driver);
         settingsPage = new SettingsPage(driver);
         favoritesPage = new FavoritesPage(driver);
 
@@ -71,7 +69,7 @@ public class SampleTest {
         }
     }
 
-    @Test
+//    @Test
     public void sendAndDeleteMessage(){
         newsPage.confirmEntering();
         newsPage.switchToMessage();
@@ -93,7 +91,7 @@ public class SampleTest {
         settingsPage.pickForHour();
     }
 
-    @Test
+//    @Test
     public void sendPhoto(){
         newsPage.confirmEntering();
         newsPage.switchToMessage();

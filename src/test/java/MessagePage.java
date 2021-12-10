@@ -1,6 +1,7 @@
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
@@ -28,6 +29,15 @@ public class MessagePage {
         waiter.until( ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
     }
 
+    @AndroidFindBy(xpath = "//android.widget.FrameLayout[@content-desc=\"Мессенджер\"]/android.widget.ImageView")
+    public WebElement button;
+
+    @AndroidFindBy(xpath = "//android.widget.FrameLayout[@content-desc=\"Profile\"]/android.widget.ImageView")
+    public WebElement toProfile;
+
+    @AndroidFindBy(xpath = "/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.view.ViewGroup/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]")
+    public WebElement toFavourites;
+
     void swipeDown () {
         (new TouchAction(driver))
                 .press(new PointOption().withCoordinates(539, 1610))
@@ -38,19 +48,18 @@ public class MessagePage {
     }
 
     void clickOnButton() {
-        driver.findElementByXPath("//android.widget.FrameLayout[@content-desc=\"Мессенджер\"]/android.widget.ImageView");
+        button.click();
     }
 
     void switchToProfile(){
         waitingLocatorByXPath("//android.widget.FrameLayout[@content-desc=\"Profile\"]/android.widget.ImageView");
-        driver.findElementByXPath("//android.widget.FrameLayout[@content-desc=\"Profile\"]/android.widget.ImageView").click();
+        toProfile.click();
     }
 
     void switchToFav(){
         waitingLocatorByXPath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.view.ViewGroup/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]");
-        driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.view.ViewGroup/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]").click();
+        toFavourites.click();
     }
-
 
     public boolean atPage()
     {
