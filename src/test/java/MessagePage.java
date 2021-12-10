@@ -1,17 +1,34 @@
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import org.aspectj.weaver.ast.And;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.xml.xpath.XPath;
 import java.time.Duration;
 
 public class MessagePage {
 
-    void swipeDown (AndroidDriver driver) {
+    private AndroidDriver driver;
+
+    public MessagePage(AppiumDriver driver) {
+        this.driver = (AndroidDriver) driver;
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    void waitingLocatorByXPath(String xPath){
+        WebDriverWait waiter = new WebDriverWait(driver, 5000);
+        waiter.until( ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
+    }
+
+    void swipeDown () {
         (new TouchAction(driver))
                 .press(new PointOption().withCoordinates(539, 1610))
                 .waitAction(WaitOptions.waitOptions(Duration.ofMillis(200)))
@@ -20,24 +37,22 @@ public class MessagePage {
                 .perform();
     }
 
-    void clickOnButton(AndroidDriver driver) {
+    void clickOnButton() {
         driver.findElementByXPath("//android.widget.FrameLayout[@content-desc=\"Мессенджер\"]/android.widget.ImageView");
     }
 
-    void switchToProfile(AndroidDriver driver){
-        WebDriverWait waiter = new WebDriverWait(driver, 5000);
-        waiter.until( ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.widget.FrameLayout[@content-desc=\"Profile\"]/android.widget.ImageView")));
+    void switchToProfile(){
+        waitingLocatorByXPath("//android.widget.FrameLayout[@content-desc=\"Profile\"]/android.widget.ImageView");
         driver.findElementByXPath("//android.widget.FrameLayout[@content-desc=\"Profile\"]/android.widget.ImageView").click();
     }
 
-    void switchToFav(AndroidDriver driver){
-        WebDriverWait waiter = new WebDriverWait(driver, 5000);
-        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.view.ViewGroup/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]")));
+    void switchToFav(){
+        waitingLocatorByXPath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.view.ViewGroup/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]");
         driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.view.ViewGroup/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]").click();
     }
 
 
-    public boolean atPage(AndroidDriver driver)
+    public boolean atPage()
     {
         WebElement element = new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOfElementLocated(By.id("com.vkontakte.android:id/im_dialogs_list_container")));
         return !(element == null);

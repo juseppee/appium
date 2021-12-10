@@ -1,0 +1,15 @@
+{
+  "appium": {
+    "capabilities": {
+      "deviceName": "MEIZU PRO",
+      "platformName": "android",
+      "platformVersion": "7.0",
+      "udid": "860BCML222FF",
+      "appPackage": "com.vkontakte.android",
+      "appActivity": "com.vkontakte.android.MainActivity"
+    },
+
+    "url": "http://localhost:4723/wd/hub",
+    "implicitlyWait": 10
+  }
+}

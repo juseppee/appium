@@ -3,6 +3,8 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +17,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import org.testng.annotations.BeforeSuite;
 
 public class SampleTest {
 
@@ -24,69 +28,83 @@ public class SampleTest {
     private static MessagePage messagePage;
     private static ProfilePage profilePage;
     private static SettingsPage settingsPage;
-    private static Inspector inspector;
-    private static BrowserStackSample browserStackSample;
     private static FavoritesPage favoritesPage;
+    private DesiredCapabilities capabilities;
 
     @Before
     public void setUp() throws MalformedURLException {
 
-        browserStackSample = new BrowserStackSample();
-        inspector = new Inspector();
+        switch (Configuration.DEVICE) {
+            case meizu:
+                setAndroidCapabilities(ConfProperties.getProperty("pathMeizu"));
+                break;
+            case browserstack:
+                setAndroidCapabilities(ConfProperties.getProperty("pathBrowserStack"));
+                break;
+            default:
+                throw new RuntimeException("Incorrect device");
+        }
 
-        driver = browserStackSample.setAndroidCapabilities();
-        //driver = inspector.setAndroidCapabilities();
+        loginPage = new LoginPage(driver);
+        newsPage = new NewsPage(driver);
+        messagePage = new MessagePage(driver);
+        profilePage = new ProfilePage(driver);
+        settingsPage = new SettingsPage(driver);
+        favoritesPage = new FavoritesPage(driver);
 
-        loginPage = new LoginPage();
-        newsPage = new NewsPage();
-        messagePage = new MessagePage();
-        profilePage = new ProfilePage();
-        settingsPage = new SettingsPage();
-        favoritesPage = new FavoritesPage();
-
-        loginPage.tapOnLoginButton(driver);
-//        loginPage.refuseSuggestion(driver);
-        loginPage.enterLogin(driver);
-        loginPage.enterPassword(driver);
-        loginPage.tapOnEnterButton(driver);
+        loginPage.tapOnLoginButton();
+//        loginPage.refuseSuggestion();
+        loginPage.enterLogin();
+        loginPage.enterPassword();
+        loginPage.tapOnEnterButton();
     }
 
-
+    private void setAndroidCapabilities(String path) throws JSONException {
+        this.capabilities = new DesiredCapabilities();
+        JSONObject appiumJson = SetCapability.readJsonFromFile(this.getClass().getClassLoader().getResource(path).getPath());
+        JSONObject caps = SetCapability.getCapabilities(appiumJson);
+        caps.keySet().forEach(keyStr -> this.capabilities.setCapability(keyStr, caps.get(keyStr)));
+        try {
+            this.driver = new AndroidDriver<MobileElement>(new URL(SetCapability.getUrl(appiumJson)), this.capabilities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     @Test
     public void sendAndDeleteMessage(){
-        newsPage.confirmEntering(driver);
-        newsPage.switchToMessage(driver);
-        newsPage.clickButton(driver);
-        messagePage.switchToFav(driver);
-        favoritesPage.pasteMessage(driver);
-        favoritesPage.sendMessage(driver);
-        favoritesPage.pickMessage(driver);
-        favoritesPage.deleteMessage(driver);
-        favoritesPage.confirmDeleting(driver);
+        newsPage.confirmEntering();
+        newsPage.switchToMessage();
+        newsPage.clickButton();
+        messagePage.switchToFav();
+        favoritesPage.pasteMessage();
+        favoritesPage.sendMessage();
+        favoritesPage.pickMessage();
+        favoritesPage.deleteMessage();
+        favoritesPage.confirmDeleting();
     }
 
     @Test
     public void doNoDisturb(){
-        newsPage.confirmEntering(driver);
-        newsPage.clickOnMenu(driver);
-        newsPage.switchToSettings(driver);
-        settingsPage.doNotDisturb(driver);
-        settingsPage.pickForHour(driver);
+        newsPage.confirmEntering();
+        newsPage.clickOnMenu();
+        newsPage.switchToSettings();
+        settingsPage.doNotDisturb();
+        settingsPage.pickForHour();
     }
 
     @Test
     public void sendPhoto(){
-        newsPage.confirmEntering(driver);
-        newsPage.switchToMessage(driver);
-        newsPage.clickButton(driver);
-        messagePage.switchToFav(driver);
-        favoritesPage.addAttachment(driver);
-        favoritesPage.allowVk(driver);
-        favoritesPage.allowAndroid(driver);
-        favoritesPage.pickPhoto(driver);
-        favoritesPage.attachPhoto(driver);
-        favoritesPage.sendPhoto(driver);
+        newsPage.confirmEntering();
+        newsPage.switchToMessage();
+        newsPage.clickButton();
+        messagePage.switchToFav();
+        favoritesPage.addAttachment();
+        favoritesPage.allowVk();
+        favoritesPage.allowAndroid();
+        favoritesPage.pickPhoto();
+        favoritesPage.attachPhoto();
+        favoritesPage.sendPhoto();
     }
 
 

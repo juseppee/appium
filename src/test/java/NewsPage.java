@@ -1,44 +1,49 @@
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.aspectj.weaver.ast.And;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class NewsPage {
+    private AndroidDriver driver;
 
-    void confirmEntering(AndroidDriver driver){
+    public NewsPage(AppiumDriver driver) {
+        this.driver = (AndroidDriver) driver;
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    void waitingLocatorByXPath(String xPath){
         WebDriverWait waiter = new WebDriverWait(driver, 5000);
-//        waiter.until( ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.widget.FrameLayout[@content-desc=\"Messenger\"]/android.widget.ImageView")));
-        waiter.until(ExpectedConditions.presenceOfElementLocated(MobileBy.xpath("//android.widget.FrameLayout[@content-desc=\"Messenger\"]")));
-//        waiter.until( ExpectedConditions.visibilityOfElementLocated(By.xpath("//android.widget.FrameLayout[@content-desc=\"Мессенджер\"]/android.widget.ImageView")));
+        waiter.until( ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
     }
 
-    void switchToMessage(AndroidDriver driver){
+    void confirmEntering(){
+        waitingLocatorByXPath("//android.widget.FrameLayout[@content-desc=\"Messenger\"]/android.widget.ImageView");
+    }
+
+    void switchToMessage(){
          driver.findElementByXPath("//android.widget.FrameLayout[@content-desc=\"Messenger\"]/android.widget.ImageView").click();
-//        driver.findElementByXPath("//android.widget.FrameLayout[@content-desc=\"Мессенджер\"]/android.widget.ImageView").click();
     }
 
-    void clickOnMenu(AndroidDriver driver){
+    void clickOnMenu(){
         driver.findElementByAccessibilityId("Open menu").click();
-//        driver.findElementByAccessibilityId("Открыть меню").click();
     }
 
-    void switchTheme(AndroidDriver driver) {
-//        WebDriverWait waiter = new WebDriverWait(driver, 5000);
-//        waiter.until( ExpectedConditions.visibilityOfElementLocated(By.id("Переключить тему")));
+    void switchTheme() {
         driver.findElementByAccessibilityId("Switch modes").click();
-//        driver.findElementByAccessibilityId("Переключить тему").click();
     }
 
-    void switchToSettings(AndroidDriver driver){
+    void switchToSettings(){
         driver.findElementByAccessibilityId("Settings").click();
-//        driver.findElementByAccessibilityId("Настройки").click();
     }
 
 
-    void clickButton(AndroidDriver driver){
+    void clickButton(){
         driver.findElementById("com.vkontakte.android:id/largeLabel").click();
     }
 
