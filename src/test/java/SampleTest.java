@@ -69,11 +69,13 @@ public class SampleTest {
         }
     }
 
-//    @Test
+    @Test
     public void sendAndDeleteMessage(){
         newsPage.confirmEntering();
+        Assert.assertTrue(newsPage.atPage());
         newsPage.switchToMessage();
         newsPage.clickButton();
+        Assert.assertTrue(messagePage.atPage());
         messagePage.switchToFav();
         favoritesPage.pasteMessage();
         favoritesPage.sendMessage();
@@ -87,15 +89,18 @@ public class SampleTest {
         newsPage.confirmEntering();
         newsPage.clickOnMenu();
         newsPage.switchToSettings();
+        Assert.assertTrue(settingsPage.atPage());
         settingsPage.doNotDisturb();
         settingsPage.pickForHour();
     }
 
-//    @Test
+    @Test
     public void sendPhoto(){
         newsPage.confirmEntering();
+        Assert.assertTrue(newsPage.atPage());
         newsPage.switchToMessage();
         newsPage.clickButton();
+        Assert.assertTrue(messagePage.atPage());
         messagePage.switchToFav();
         favoritesPage.addAttachment();
         favoritesPage.allowVk();

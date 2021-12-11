@@ -63,7 +63,7 @@ public class NewsPage {
         button.click();
     }
 
-    public boolean atPage(AndroidDriver driver)
+    public boolean atPage()
     {
         WebElement element = new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOfElementLocated(By.id("com.vkontakte.android:id/notifications_button")));
         return !(element == null);
